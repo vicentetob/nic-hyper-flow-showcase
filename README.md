@@ -6,8 +6,6 @@
 
 Nic Hyper Flow is a persistent cognitive architecture built for VS Code. It doesn't just autocomplete code; it reads files, edits in batches, manages persistent terminal sessions (`node-pty`), controls headless browsers (`playwright`), and reasons through a 64-state machine before acting.
 
-![Nic Hyper Flow Workflow](docs/assets/showcase_main.png)
-
 ## 🏗️ The Engineering
 
 Most AI extensions are simple API wrappers. Nic is built as a distributed system with a local core:
