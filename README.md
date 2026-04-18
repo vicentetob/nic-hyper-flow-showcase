@@ -2,7 +2,7 @@
 
 > A local multi-agent AI orchestration engine living inside your VS Code, controllable via a mobile app.
 
-[![VS Code Marketplace](https://img.shields.io/badge/Available%20on-Marketplace-blue.svg)](link) [![Flutter Remote](https://img.shields.io/badge/Companion_App-Flutter-02569B.svg)](link)
+[![VS Code Marketplace](https://img.shields.io/badge/Available%20on-Marketplace-blue.svg)](https://marketplace.visualstudio.com/items?itemName=NicHyperFlow.nic-hyper-flow-alpha2) [![Flutter Remote](https://img.shields.io/badge/Companion_App-Flutter-02569B.svg)](https://github.com/vicentetob/nic-hyper-flow-showcase/tree/master/remote_control)
 
 Nic Hyper Flow is a persistent cognitive architecture built for VS Code. It doesn't just autocomplete code; it reads files, edits in batches, manages persistent terminal sessions (`node-pty`), controls headless browsers (`playwright`), and reasons through a 64-state machine before acting.
 
@@ -32,4 +32,4 @@ The cognitive orchestration loop, state machine, and context chunking algorithms
 ## 🚀 Get Nic Hyper Flow
 
 Ready to upgrade your development environment?
-[👉 Install from the VS Code Marketplace](link)
+[👉 Install from the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=NicHyperFlow.nic-hyper-flow-alpha2)
