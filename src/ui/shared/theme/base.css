@@ -1,0 +1,30 @@
+/* Resets e helpers globais */
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--vscode-font-family, 'Inter', -apple-system, sans-serif);
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 40%),
+    radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.03) 0px, transparent 40%);
+}
+
+/* Fix: containers flex não podem travar largura */
+* {
+  min-width: 0;
+}
+
+/* Fix: texto não pode estourar containers */
+* {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Fix: scroll padding para melhor navegação */
+* {
+  scroll-padding-top: 10px;
+}

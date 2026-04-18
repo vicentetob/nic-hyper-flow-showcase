@@ -1,0 +1,21 @@
+:root {
+  /* Variáveis de Tema - Ultra Compacto & Glass */
+  --bg-main: #0f0f12;
+  --glass-bg: rgba(30, 30, 35, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.3);
+  --blur-amount: 10px;
+
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+
+  --accent-color: #3b82f6;
+  --accent-glow: rgba(59, 130, 246, 0.4);
+
+  --user-msg-bg: rgba(59, 130, 246, 0.15);
+  --assistant-msg-bg: rgba(255, 255, 255, 0.04);
+
+  --error-color: #ef4444;
+  --success-color: #10b981;
+  --warn-color: #f59e0b;
+}

@@ -1,0 +1,414 @@
+/* Chat Main Layout Styles */
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 16px 24px; /* Aumentado padding horizontal para equilíbrio */
+  box-sizing: border-box;
+  max-width: 1200px; /* Reduzido levemente para um cockpit mais focado */
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+}
+
+header {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  z-index: 200;
+  position: relative;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Last user message preview bubble — shows context at top, hides when message is visible */
+.last-user-msg-preview {
+  flex-shrink: 0;
+  align-self: flex-end;
+  position: relative;        /* stay above cognitive-background layers */
+  z-index: 10;
+  max-width: 85%;
+  padding: 4px 10px;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  line-height: normal;
+  color: var(--text-primary, #e5e7eb);
+  /* Explicit fallback so bubble shows even when tokens.css 401s */
+  background: var(--user-msg-bg, var(--vscode-editor-selectionBackground, #1e3a8a)); /* Fallback mais forte com cor sólida base dark blue */
+  border: 1px solid rgba(59, 130, 246, 0.4); /* Borda mais visível */
+  border-radius: 6px;
+  border-bottom-right-radius: 2px;
+  max-height: 2.8em; /* ~2 linhas de texto */
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
+  opacity: 0.85;
+  /* Gradiente estilo Cursor IDE: fade mais suave começando mais cedo para 3ª linha */
+  -webkit-mask-image: linear-gradient(to bottom, 
+    rgba(0,0,0,1) 0%, 
+    rgba(0,0,0,1) 50%,   /* Primeiras 2 linhas totalmente visíveis */
+    rgba(0,0,0,0.8) 60%, /* Começa o fade na 3ª linha */
+    rgba(0,0,0,0.4) 70%, 
+    rgba(0,0,0,0) 100%   /* Totalmente transparente no final */
+  );
+  mask-image: linear-gradient(to bottom, 
+    rgba(0,0,0,1) 0%, 
+    rgba(0,0,0,1) 50%,
+    rgba(0,0,0,0.8) 60%,
+    rgba(0,0,0,0.4) 70%,
+    rgba(0,0,0,0) 100%
+  );
+  cursor: default;
+  user-select: none;
+  display: none;
+}
+
+.last-user-msg-preview.visible {
+  display: block;
+}
+
+/* Images row inside the preview */
+.last-user-msg-preview-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 3px;
+}
+
+.last-user-msg-preview-img {
+  height: 32px;
+  width: auto;
+  max-width: 64px;
+  border-radius: 3px;
+  object-fit: cover;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+.last-user-msg-preview-text {
+  display: block;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+#chat-feed {
+  flex: 1;
+  overflow-y: auto; /* Usa auto para compatibilidade */
+  overflow-x: hidden;
+  padding: 0 12px; /* Mais respiro lateral */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+
+/* Agent Turn Grouping */
+.agent-turn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-left: 2px solid var(--glass-border, rgba(255,255,255,0.08));
+  padding-left: 10px;
+  margin: 4px 0;
+}
+
+.agent-turn:hover {
+  border-left-color: var(--accent-color, #6366f1);
+}
+
+/* Scrollbar Premium VS Code Style (Overlay) */
+#chat-feed::-webkit-scrollbar {
+  width: 6px;
+}
+
+#chat-feed::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#chat-feed::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.06); /* Quase invisível por padrão */
+  border-radius: 10px;
+  border: 2px solid transparent; /* Respiro lateral */
+  background-clip: content-box;
+}
+
+/* Aparece suavemente no hover do container */
+#chat-feed:hover::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* Fica mais forte quando o mouse está em cima da própria barra */
+#chat-feed::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+footer {
+  padding: 12px 0 24px 0; /* Respiro de 24px na base */
+  background: transparent;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.progress-fill {
+  flex: 1;
+  height: 4px;
+  background: var(--glass-bg);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: var(--progress-width, 0%);
+  background: var(--accent-color);
+  transition: width 0.3s;
+}
+
+/* ==========================================================================
+   ✅ LOGIN GATE — BIG TECH UPGRADE (FIX DO CARD + ESPAÇAMENTO + BOTÃO)
+   ========================================================================== */
+
+#login-gate-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 28px;
+  background: rgba(0, 0, 0, 0.55) !important;
+  backdrop-filter: blur(14px);
+}
+
+
+#login-gate-modal .login-card {
+  width: min(560px, 92vw);
+  padding: 34px;
+  border-radius: 18px;
+
+  /* ✅ fallback real (pra não virar transparente) */
+  background: rgba(20, 20, 28, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  box-shadow:
+    0 18px 70px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#login-gate-modal .login-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      900px 300px at 10% 10%,
+      rgba(120, 120, 255, 0.15),
+      transparent 60%
+    ),
+    radial-gradient(
+      700px 250px at 90% 20%,
+      rgba(200, 120, 255, 0.12),
+      transparent 55%
+    );
+  pointer-events: none;
+}
+
+#login-gate-modal #login-content-state {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Header */
+#login-gate-modal .welcome-title {
+  margin: 0;
+  font-size: 1.9rem;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  color: rgba(255, 255, 255, 0.96);
+  text-align: left;
+}
+
+#login-gate-modal .welcome-subtitle {
+  margin: 8px 0 0 0;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  opacity: 0.85;
+  color: rgba(255, 255, 255, 0.75);
+  text-align: left;
+}
+
+/* Features (vira “pills” bonito) */
+#login-gate-modal .features-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 6px 0 10px 0;
+}
+
+#login-gate-modal .feature-item {
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.86);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Privacy box */
+#login-gate-modal .privacy-box {
+  background: rgba(100, 100, 255, 0.08);
+  border: 1px solid rgba(120, 120, 255, 0.14);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+#login-gate-modal .privacy-icon {
+  font-size: 1.2rem;
+}
+
+#login-gate-modal .privacy-text strong {
+  display: block;
+  font-size: 0.92rem;
+  margin-bottom: 4px;
+  color: rgba(180, 190, 255, 0.95);
+}
+
+#login-gate-modal .privacy-text p {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  opacity: 0.85;
+}
+
+/* Terms (arruma checkbox + alinhamento) */
+#login-gate-modal .terms-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
+
+#login-gate-modal .terms-checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: #7c83ff;
+  transform: translateY(1px);
+}
+
+#login-gate-modal .terms-label {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.86);
+  cursor: pointer;
+  user-select: none;
+}
+
+#login-gate-modal .terms-label a {
+  color: rgba(170, 180, 255, 0.95);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+#login-gate-modal .terms-label a:hover {
+  text-decoration: underline;
+  opacity: 1;
+}
+
+/* Botão PREMIUM de verdade */
+#login-gate-modal .big-tech-button {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  background: linear-gradient(135deg, #6f7dff 0%, #a855f7 100%);
+  color: white;
+
+  font-weight: 750;
+  font-size: 0.98rem;
+  cursor: pointer;
+
+  transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease;
+  box-shadow: 0 14px 40px rgba(120, 90, 255, 0.28);
+}
+
+/* ✅ Disabled state certo */
+#login-gate-modal .big-tech-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: grayscale(20%);
+  box-shadow: none;
+}
+
+/* ✅ Hover só quando habilitado */
+#login-gate-modal .big-tech-button:not(:disabled):hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+#login-gate-modal .big-tech-button:not(:disabled):active {
+  transform: translateY(0px);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--vscode-widget-border);
+  border-top: 4px solid var(--vscode-textLink-foreground);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

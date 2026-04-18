@@ -1,0 +1,20 @@
+/* Thinking Feature Styles */
+
+.thinking-bubble {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.75rem;
+  background: none;
+  border: none;
+  margin-bottom: 16px;
+}
+
+.thinking-header {
+  display: none;
+}
+
+.thinking-content {
+  max-height: 160px;
+  padding: 0 4px;
+  overflow-y: auto;
+}

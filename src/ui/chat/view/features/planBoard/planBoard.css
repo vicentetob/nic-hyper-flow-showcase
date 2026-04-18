@@ -1,0 +1,398 @@
+/**
+ * Estilos para o PlanBoard (Hyper Flow)
+ * Estética baseada no Jarvis 2 - Compacto, Elegante e Assertivo.
+ */
+
+.plan-board {
+  margin: 16px 0;
+  padding: 12px;
+  background: var(--vscode-editorWidget-background);
+  border: 1px solid var(--vscode-widget-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  font-family: var(--vscode-font-family);
+  animation: slideIn 0.3s ease-out;
+  max-width: 100%;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.plan-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--vscode-panel-border);
+}
+
+.plan-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.plan-icon {
+  color: var(--vscode-symbolIcon-propertyForeground);
+  font-size: 1.1rem;
+}
+
+.plan-goal {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--vscode-foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 280px;
+}
+
+.plan-badge {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--vscode-badge-background);
+  color: var(--vscode-badge-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.plan-badge.completed {
+  background: var(--vscode-debugIcon-breakpointForeground);
+  color: #fff;
+}
+
+.plan-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plan-step {
+  background: var(--vscode-editor-background);
+  border-radius: 6px;
+  border: 1px solid var(--vscode-widget-border);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.plan-step-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+}
+
+.plan-step.active {
+  border-color: var(--vscode-focusBorder);
+  box-shadow: 0 0 0 1px var(--vscode-focusBorder);
+}
+
+.plan-step.completed {
+  background: var(--vscode-list-inactiveSelectionBackground);
+  border-color: transparent;
+  opacity: 0.7;
+}
+
+.plan-step-index {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--vscode-descriptionForeground);
+  color: var(--vscode-editor-background);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.plan-step.active .plan-step-index {
+  background: var(--vscode-focusBorder);
+}
+
+.plan-step.completed .plan-step-index {
+  background: var(--vscode-debugIcon-breakpointForeground);
+}
+
+.plan-step-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.plan-step-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--vscode-foreground);
+}
+
+.plan-step-intent {
+  font-size: 0.75rem;
+  color: var(--vscode-descriptionForeground);
+  line-height: 1.2;
+}
+
+.plan-step-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.plan-step-deps, .plan-step-files {
+  font-size: 0.75rem;
+  color: var(--vscode-textLink-foreground);
+  font-family: var(--vscode-editor-font-family);
+  opacity: 0.9;
+}
+
+.plan-step-status-icon {
+  font-size: 1rem;
+  min-width: 20px;
+  text-align: right;
+}
+
+.plan-step.active .plan-step-status-icon {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.1); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Tool Cards One-line improvements */
+.tool-card.one-line {
+  display: flex;
+  align-items: center;
+  padding: 4px 12px;
+  height: auto;
+  min-height: 28px;
+  margin: 6px 0;
+  border-radius: 14px;
+  background: var(--vscode-editor-background);
+  border: 1px solid var(--vscode-widget-border);
+  font-size: 0.75rem;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+
+.tool-card.one-line:hover {
+  opacity: 1;
+  border-color: var(--vscode-focusBorder);
+}
+
+/* ============================
+   Current Plan Styles
+   ============================ */
+
+.current-plan-container {
+  margin: 16px 0;
+  padding: 16px;
+  background: var(--vscode-editorWidget-background);
+  border: 1px solid var(--vscode-widget-border);
+  border-left: 4px solid var(--vscode-focusBorder);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: var(--vscode-font-family);
+  animation: slideIn 0.3s ease-out;
+}
+
+.current-plan-container.completed {
+    border-left-color: var(--vscode-debugIcon-breakpointForeground);
+}
+
+.current-plan-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.current-plan-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.current-plan-icon {
+  font-size: 1.2rem;
+}
+
+.current-plan-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--vscode-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.current-plan-progress-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: var(--vscode-focusBorder);
+  color: #fff;
+}
+
+.current-plan-container.completed .current-plan-progress-badge {
+    background: var(--vscode-debugIcon-breakpointForeground);
+}
+
+.current-plan-description {
+  font-size: 0.8rem;
+  color: var(--vscode-foreground);
+  margin-bottom: 8px;
+  line-height: 1.2;
+  opacity: 0.85;
+}
+
+.current-plan-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.current-plan-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px; /* Reduced from 10px */
+  padding: 6px; /* Reduced from 8px */
+  border-radius: 4px; /* Smaller */
+  background: var(--vscode-editor-background);
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.current-plan-step.done {
+  opacity: 0.6;
+  background: var(--vscode-list-inactiveSelectionBackground);
+}
+
+.step-checkbox {
+  width: 16px; /* Smaller */
+  height: 16px; /* Smaller */
+  border: 1.5px solid var(--vscode-descriptionForeground); /* Thinner */
+  border-radius: 3px; /* Smaller */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem; /* Smaller */
+  font-weight: bold;
+  color: var(--vscode-focusBorder);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.current-plan-step.done .step-checkbox {
+  background: var(--vscode-focusBorder);
+  border-color: var(--vscode-focusBorder);
+  color: #fff;
+}
+
+.current-plan-container.completed .current-plan-step.done .step-checkbox {
+    background: var(--vscode-debugIcon-breakpointForeground);
+    border-color: var(--vscode-debugIcon-breakpointForeground);
+}
+
+.step-content {
+  display: flex;
+  gap: 6px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.step-index {
+  font-weight: 700;
+  color: var(--vscode-descriptionForeground);
+}
+
+.step-desc {
+  color: var(--vscode-foreground);
+}
+
+.current-plan-step.done .step-desc {
+  text-decoration: line-through;
+}
+
+.current-plan-footer {
+  margin-top: 16px;
+}
+
+.progress-bar-bg {
+  height: 4px;
+  background: var(--vscode-widget-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--vscode-focusBorder);
+  transition: width 0.5s ease-in-out;
+}
+
+.current-plan-container.completed .progress-bar-fill {
+    background: var(--vscode-debugIcon-breakpointForeground);
+}
+
+/* ============================
+   Ultra Compact Mode
+   ============================ */
+.current-plan-container.compact {
+  margin: 4px 0;
+  padding: 6px;
+  border-left-width: 2px;
+  border-radius: 4px;
+}
+
+.current-plan-container.compact .current-plan-header {
+  margin-bottom: 4px;
+  padding-bottom: 2px;
+  display: none; /* Oculta o cabeçalho inteiro */
+}
+
+.current-plan-container.compact .current-plan-description {
+  font-size: 0.75rem;
+  margin-bottom: 6px;
+  line-height: 1.2;
+  opacity: 0.8;
+}
+
+.current-plan-container.compact .current-plan-steps {
+  gap: 4px;
+}
+
+.current-plan-container.compact .current-plan-step {
+  padding: 4px;
+  gap: 4px;
+  border-radius: 2px;
+}
+
+.current-plan-container.compact .step-checkbox {
+  width: 12px;
+  height: 12px;
+  font-size: 0.6rem;
+}
+
+.current-plan-container.compact .step-content {
+  font-size: 0.75rem;
+  line-height: 1.2;
+  gap: 4px;
+}
+
+.current-plan-container.compact .current-plan-footer {
+  margin-top: 8px;
+}
+
+.current-plan-container.compact .progress-bar-bg {
+  height: 2px;
+}

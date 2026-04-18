@@ -1,0 +1,61 @@
+/* Vision Warning Feature Styles */
+
+.vision-warning-banner {
+  padding: 12px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid var(--warn-color);
+  border-radius: 6px;
+  margin-bottom: 8px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s;
+}
+
+.vision-warning-banner.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.vision-warning-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vision-warning-icon {
+  font-size: 1.2rem;
+}
+
+.vision-warning-text {
+  flex: 1;
+  color: var(--warn-color);
+  font-size: 0.85rem;
+}
+
+.vision-warning-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.vision-warning-close {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vision-warning-close:hover {
+  color: var(--text-primary);
+}

@@ -1,0 +1,18 @@
+/* Model Selector Feature Styles */
+
+.model-selector-btn {
+  padding: 6px 12px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 4px;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.model-selector-meta {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}

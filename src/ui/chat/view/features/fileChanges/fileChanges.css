@@ -1,0 +1,53 @@
+/* File Changes Feature Styles */
+
+.file-changes {
+  padding: 2px 8px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 4px;
+  margin-bottom: 4px;
+  font-size: 0.7rem;
+}
+
+.file-changes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.file-changes-list {
+  margin-top: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+}
+
+.file-change-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.file-change-name {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.file-change-name:hover {
+  color: var(--accent-color);
+}
+
+.file-stat-added {
+  color: var(--success-color);
+}
+
+.file-stat-removed {
+  color: var(--error-color);
+}

@@ -1,0 +1,124 @@
+/* Messages Feature Styles */
+
+.message {
+  max-width: 85%;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  line-height: normal;
+  position: relative;
+  border: 1px solid var(--glass-border);
+}
+
+.message.user {
+  align-self: flex-end;
+  background: var(--user-msg-bg);
+  border-color: rgba(59, 130, 246, 0.1);
+  border-bottom-right-radius: 2px;
+  padding-right: 32px;
+}
+
+.message.assistant {
+  align-self: flex-start;
+  background: var(--assistant-msg-bg);
+  border-bottom-left-radius: 2px;
+}
+
+.message-content {
+  display: block;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.message-content > :first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Estilos para elementos de markdown dentro das mensagens */
+.message-content .md {
+  margin: 0;
+  padding: 0;
+}
+
+.message-content .md > *:first-child {
+  margin-top: 0;
+}
+
+.message-content .md > *:last-child {
+  margin-bottom: 0;
+}
+
+.message-content .md p {
+  margin: 0.4em 0;
+  line-height: 1.4;
+}
+
+.message-content .md code {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  font-size: 0.9em;
+  border: none;
+}
+
+.message-content .md pre {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.6em;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 0.5em 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.message-content .md pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.message-content .md blockquote {
+  border-left: 3px solid rgba(255, 255, 255, 0.2);
+  margin: 0.5em 0;
+  padding-left: 0.8em;
+  color: var(--text-secondary);
+}
+
+.message-content .md ul,
+.message-content .md ol {
+  margin: 0.4em 0;
+  padding-left: 1.2em;
+}
+
+.message-content .md li {
+  margin: 0.2em 0;
+}
+
+/* Seta de Voltar (Rewind/Edit) minimalista */
+.edit-btn {
+  position: absolute;
+  top: 14px; /* Mais para baixo */
+  right: 8px; /* Mais margem da borda */
+  background: transparent; /* Remove o quadrado */
+  border: none; /* Remove o quadrado */
+  color: var(--text-secondary);
+  cursor: pointer;
+  opacity: 0.65; /* Mais sutil */
+  transition: all 0.2s ease;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.edit-btn:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.edit-btn:hover {
+  color: var(--text-primary);
+}

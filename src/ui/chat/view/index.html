@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- CSP: libera CSS/JS do webview + imagens data:/blob: (preview e anexos) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="
+          default-src 'none';
+          img-src {{CSP_SOURCE}} https: data: blob:;
+          style-src {{CSP_SOURCE}} 'unsafe-inline';
+          style-src-attr 'unsafe-inline';
+          script-src 'nonce-{{NONCE}}' 'unsafe-eval';
+          media-src {{CSP_SOURCE}};
+          connect-src {{CSP_SOURCE}} https: wss:;
+        " />
+
+
+  <!-- Shared CSS -->
+  <link rel="stylesheet" href="{{TOKENS_CSS_URI}}">
+  <link rel="stylesheet" href="{{BASE_CSS_URI}}">
+  <link rel="stylesheet" href="{{UTILITIES_CSS_URI}}">
+  
+  <!-- Chat Layout -->
+  <link rel="stylesheet" href="{{CHAT_CSS_URI}}">
+  
+  <!-- Feature CSS -->
+  <link rel="stylesheet" href="{{MESSAGES_CSS_URI}}">
+  <link rel="stylesheet" href="{{THINKING_CSS_URI}}">
+  <link rel="stylesheet" href="{{TOOL_CARDS_CSS_URI}}">
+  <link rel="stylesheet" href="{{COMPOSER_CSS_URI}}">
+  <link rel="stylesheet" href="{{ATTACHMENTS_CSS_URI}}">
+  <link rel="stylesheet" href="{{MODEL_SELECTOR_CSS_URI}}">
+  <link rel="stylesheet" href="{{CHAT_LIST_HEADER_CSS_URI}}">
+  <link rel="stylesheet" href="{{SIDEBAR_CSS_URI}}">
+  <link rel="stylesheet" href="{{FILE_CHANGES_CSS_URI}}">
+  <link rel="stylesheet" href="{{CONTEXT_PROGRESS_CSS_URI}}">
+  <link rel="stylesheet" href="{{VISION_WARNING_CSS_URI}}">
+  <link rel="stylesheet" href="{{SUBSCRIPTION_WARNING_CSS_URI}}">
+  <link rel="stylesheet" href="{{EDIT_MODAL_CSS_URI}}">
+  <link rel="stylesheet" href="{{PLAN_BOARD_CSS_URI}}">
+  <link rel="stylesheet" href="{{AGENT_STATUS_CSS_URI}}">
+  
+  <!-- Widget Patch -->
+  <link rel="stylesheet" href="{{PATCH_WIDGET_CSS_URI}}">
+
+  <title>Nic Hyper Flow</title>
+
+  <style nonce="{{NONCE}}">
+    /* Login Gate Avassalador */
+    #login-gate-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      overflow: hidden;
+    }
+
+    #login-gate-modal::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(99,102,241,0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 20s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    .gate-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 480px;
+      padding: 3rem 2rem;
+      background: rgba(17, 24, 39, 0.95);
+      border-radius: 20px;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 100px rgba(99, 102, 241, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .gate-logo {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 1.5rem auto;
+      animation: float 3s ease-in-out infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gate-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .gate-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0 0 0.5rem 0;
+      letter-spacing: -0.02em;
+    }
+
+    .gate-subtitle {
+      color: #9ca3af;
+      font-size: 1rem;
+      margin: 0 0 2.5rem 0;
+      line-height: 1.5;
+    }
+
+    .gate-checkbox-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background: rgba(99, 102, 241, 0.05);
+      border-radius: 10px;
+      border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    .gate-checkbox {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #6366f1;
+    }
+
+    .gate-checkbox-label {
+      color: #e5e7eb;
+      font-size: 0.9rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .gate-button {
+      width: 100%;
+      padding: 16px 32px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gate-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .gate-button:hover::before {
+      left: 100%;
+    }
+
+    .gate-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+    }
+
+    .gate-button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .gate-button:disabled::before {
+      display: none;
+    }
+
+    .gate-footer {
+      margin-top: 2rem;
+      color: #6b7280;
+      font-size: 0.85rem;
+    }
+
+    .gate-footer a {
+      color: #8b5cf6;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .gate-footer a:hover {
+      color: #a78bfa;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(99, 102, 241, 0.2);
+      border-top: 4px solid #6366f1;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1.5rem auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(99, 102, 241, 0.6);
+      border-radius: 50%;
+      animation: particleFloat 15s infinite;
+    }
+
+    .chat-api-cost {
+      font-size: 12px;
+      color: var(--text-secondary);
+      min-width: 44px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      opacity: 0.9;
+      user-select: none;
+      position: relative;
+    }
+
+    .chat-api-cost[data-tooltip]:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 8px);
+      right: 0;
+      z-index: 10000;
+
+      width: max-content;
+      max-width: 220px;
+      padding: 6px 10px;
+
+      font-size: 0.62rem;
+      line-height: 1.4;
+      white-space: pre;
+
+      border-radius: 4px;
+      background: rgba(15, 15, 20, 0.95);
+      color: var(--text-primary);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+
+      pointer-events: none;
+      opacity: 0;
+      animation: tooltip-fade-in 0.2s ease-out forwards;
+      animation-delay: 0.4s;
+    }
+
+    @keyframes tooltip-fade-in {
+      to { opacity: 1; transform: translateY(-2px); }
+    }
+
+    .login-loading-title {
+      color: #e5e7eb;
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .login-loading-text {
+      color: #9ca3af;
+      margin-top: 0.5rem;
+    }
+
+    .hidden-file-input {
+      display: none;
+    }
+
+    .gate-button.disabled {
+      opacity: 0.4;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+
+    .gate-button.enabled {
+      opacity: 1;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    @keyframes particleFloat {
+      0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+    }
+
+    /* Loading Screen Inicial */
+    #initial-loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0f0f12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100000;
+      transition: opacity 0.5s ease-out, visibility 0.5s;
+    }
+
+    #initial-loading-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loading-screen-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .loading-screen-logo {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 1.5rem auto;
+      animation: float 3s ease-in-out infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .loading-screen-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .loading-screen-title {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .loading-screen-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(99, 102, 241, 0.1);
+      border-top: 3px solid #6366f1;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1.5rem auto;
+    }
+
+    .loading-screen-status {
+      color: #9ca3af;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+  </style>
+  <style nonce="{{NONCE}}">
+    .brain-svg {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    .brain-svg svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
+  </style>
+</head>
+
+<body class="loading-state">
+  <div id="app">
+    <!-- Background dinâmico baseado no estado cognitivo -->
+   <div id="cognitive-background-a" class="cognitive-background cognitive-background-layer"></div>
+   <div id="cognitive-background-b" class="cognitive-background cognitive-background-layer"></div>
+    <header>
+      <div class="header-left">
+        
+        <select id="chat-dropdown" class="chat-dropdown" title="Select Chat">
+          <option value="">New Chat (0 msgs)</option>
+        </select>
+        <button id="new-chat-button-header" class="icon-button" title="New Chat">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="header-right">
+        <button id="connect-phone-button" class="icon-button" title="Connect Phone">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+            <line x1="12" y1="18" x2="12" y2="18"></line>
+          </svg>
+        </button>
+        <button id="settings-button" class="icon-button" title="Settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div id="agent-status-bar" class="agent-status-hidden" data-state="idle">
+      <div class="status-dot"></div>
+      <span class="status-label"></span>
+      <span class="status-detail"></span>
+      <span class="status-mode-badge"></span>
+    </div>
+
+    <!-- Subagent Status Bar — exibido abaixo do principal quando há subagente rodando -->
+    <div id="subagent-status-bar" class="subagent-status-hidden" data-running="false">
+      <div class="subagent-dot"></div>
+      <span class="subagent-label"></span>
+      <span class="subagent-detail"></span>
+    </div>
+
+    <!-- <div id="last-user-msg-preview" class="last-user-msg-preview"></div> -->
+
+    <div id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h3 style="margin:0; font-size:0.9rem;">Conversations</h3>
+        <button id="new-chat-button"
+                style="background:var(--accent-color); border:none; color:white; border-radius:4px; cursor:pointer;"
+                title="New Chat">+</button>
+      </div>
+      <ul id="chat-list" style="list-style:none; padding:0; margin:0; overflow-y:auto; flex:1;">
+        <!-- Injetado via JS -->
+      </ul>
+    </div>
+
+    <main id="chat-feed"></main>
+
+    <div id="approval-sticky-bar" class="approval-sticky-hidden">
+      <div id="approval-sticky-inner"></div>
+    </div>
+
+     <footer>
+      <div id="file-changes" class="file-changes hidden">
+        <div class="file-changes-header" id="toggle-file-changes">
+          <span>Files: <span id="changes-count">0</span></span>
+          <span id="file-changes-arrow">▲</span>
+        </div>
+        <ul id="file-changes-list" class="file-changes-list hidden"></ul>
+      </div>
+
+      <!-- Attachment Preview -->
+      <div id="attachment-preview-container" class="attachment-preview-container hidden"></div>
+
+      <div class="composer-header">
+        <div class="identity-inline">
+        
+        </div>
+      </div>
+      <div class="composer-input-wrap" data-tooltip="You can paste images here">
+        <textarea id="user-input" placeholder=""></textarea>
+        <div class="composer-actions-left">
+          <div class="context-progress-widget" id="context-progress-widget" data-tooltip="">
+            <div class="context-progress-circle">
+              <svg class="context-progress-svg" viewBox="0 0 36 36">
+                <path class="context-progress-bg"
+                  d="M18 2.0845
+                    a 14.5 14.5 0 0 1 0 29
+                    a 14.5 14.5 0 0 1 0 -29"
+                />
+                <path class="context-progress-fg"
+                  d="M18 2.0845
+                    a 14.5 14.5 0 0 1 0 29
+                    a 14.5 14.5 0 0 1 0 -29"
+                  stroke-dasharray="0, 100"
+                />
+              </svg>
+              <div class="context-progress-percent">0%</div>
+            </div>
+          </div>
+          <div class="model-selector-anchor">
+            <button id="model-name-display" class="identity-inline identity-inline-button" type="button" aria-haspopup="listbox" aria-expanded="false" data-tooltip="Nic Assist 2.0&#10;100k ctx · 4k out · Reasoning · OCR&#10;Safe execution focus">
+              <span class="identity-inline-main">
+                <span id="model-name-display-text">Nic Assist 2.0</span>
+              </span>
+              <span id="model-name-display-chevron" class="identity-inline-chevron" aria-hidden="true">▾</span>
+            </button>
+            <div id="model-selector-menu" class="model-selector-menu hidden" role="listbox" aria-label="Selecionar modelo"></div>
+          </div>
+        </div>
+        <div class="composer-actions">
+          <div id="chat-api-cost" class="chat-api-cost" data-tooltip="Custo estimado de API deste chat">$0.00</div>
+          <div id="composer-tools-drawer" class="composer-tools-drawer hidden">
+            <button id="summarize-context-button" class="summarize-context-button" data-tooltip="Sumarizar Contexto Agora">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 14h6v6M20 10h-6V4M20 4l-6 6M4 20l6-6"/>
+              </svg>
+            </button>
+            <button id="focused-mode-button" class="focused-mode-button" type="button" data-tooltip="Ativar modo foco" aria-label="Ativar modo foco" aria-pressed="false">
+              <span class="focus-svg">{{FOCUS_SVG}}</span>
+            </button>
+            <button id="reasoning-effort-button" class="reasoning-effort-button hidden" data-tooltip="Ajustar reasoning do GPT 5.4" aria-haspopup="true" aria-expanded="false" aria-label="Reasoning: Medium">
+              <span class="brain-svg">{{BRAIN_SVG}}</span>
+            </button>
+            <button id="edit-approval-mode-button" class="edit-approval-mode-button" type="button" data-mode="apply_everything" data-tooltip="Apply everything&#10;Aplica automaticamente toda edição de código/arquivo." aria-label="Apply everything">
+              <span class="edit-approval-mode-icon edit-approval-mode-icon-apply">{{APPLY_EVERYTHING_SVG}}</span>
+              <span class="edit-approval-mode-icon edit-approval-mode-icon-ask">{{ASK_BEFORE_APPLY_SVG}}</span>
+            </button>
+          </div>
+          <button id="composer-tools-toggle" class="composer-tools-toggle" type="button" aria-expanded="false" aria-controls="composer-tools-drawer" data-tooltip="Mostrar ferramentas rápidas" aria-label="Mostrar ferramentas rápidas">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="7" x2="20" y2="7"></line>
+              <line x1="8" y1="12" x2="20" y2="12"></line>
+              <line x1="12" y1="17" x2="20" y2="17"></line>
+            </svg>
+          </button>
+          <div id="reasoning-effort-menu" class="reasoning-effort-menu hidden" role="menu" aria-label="Selecionar reasoning">
+            <button type="button" class="reasoning-effort-option" data-effort="none">None</button>
+            <button type="button" class="reasoning-effort-option" data-effort="low">Low</button>
+            <button type="button" class="reasoning-effort-option" data-effort="medium">Medium</button>
+            <button type="button" class="reasoning-effort-option" data-effort="high">High</button>
+            <button type="button" class="reasoning-effort-option" data-effort="xhigh">XHigh</button>
+          </div>
+
+          <button id="send-button">Send</button>
+        </div>
+      </div>
+     </footer>
+  </div>
+
+  <!-- Time Travel Modal -->
+  <div id="time-travel-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3 style="margin-top: 0; font-size:1rem;">⏪ Time Travel</h3>
+      <p style="color: var(--text-secondary); font-size: 0.8rem;">Revert history and files to this point?</p>
+      <div class="modal-actions">
+        <button id="confirm-rewind" class="btn-danger">Yes, Revert</button>
+        <button id="cancel-rewind" class="btn-secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Gate Modal -->
+  <div id="login-gate-modal" class="hidden">
+    <div class="particles" id="particles"></div>
+
+    <div class="gate-content">
+      <!-- Estado: exibindo QR code -->
+      <div id="login-qr-state">
+        <div class="gate-logo">
+          <img src="{{NIC_LOGO_URI}}" alt="Nic Logo">
+        </div>
+        <h1 class="gate-title">Nic Hyper Flow</h1>
+        <p class="gate-subtitle">Scan with the app to sign in with your Google account</p>
+
+        <div id="qr-container" style="
+          margin: 1.5rem auto;
+          width: 200px; height: 200px;
+          background: rgba(255,255,255,0.05);
+          border-radius: 12px;
+          border: 1px solid rgba(99,102,241,0.3);
+          display: flex; align-items: center; justify-content: center;
+          overflow: hidden;
+        ">
+          <div class="spinner"></div>
+        </div>
+
+        <p id="qr-expiry-text" style="color:#6b7280; font-size:0.8rem; margin: 0.5rem 0 1rem;">
+          Loading QR code...
+        </p>
+
+        <button id="qr-refresh-button" class="gate-button" style="
+          margin-top: 0.5rem;
+          background: rgba(99,102,241,0.15);
+          border: 1px solid rgba(99,102,241,0.4);
+          font-size: 0.9rem; padding: 10px 24px; width: auto;
+        ">
+          ↻ New QR
+        </button>
+      </div>
+
+      <!-- Estado: aguardando autenticação após scan -->
+      <div id="login-loading-state" class="hidden">
+        <div class="spinner"></div>
+        <h3 class="login-loading-title">Authenticating...</h3>
+        <p class="login-loading-text">Complete login on the app</p>
+      </div>
+
+      <!-- Estado: autenticado com sucesso (transição rápida) -->
+      <div id="login-success-state" class="hidden">
+        <div class="gate-logo">
+          <img src="{{NIC_LOGO_URI}}" alt="Nic Logo">
+        </div>
+        <h3 class="login-loading-title">Connected!</h3>
+        <p id="login-success-user" class="login-loading-text"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Screen Inicial -->
+  <div id="initial-loading-screen">
+    <div class="particles" id="loading-particles"></div>
+    <div class="loading-screen-content">
+      <div class="loading-screen-logo">
+        <img src="{{NIC_LOGO_URI}}" alt="Nic Logo">
+      </div>
+      <div class="loading-screen-title">Nic Hyper Flow</div>
+      <div class="loading-screen-spinner"></div>
+      <div class="loading-screen-status" id="loading-status">INITIALIZING INTERFACE...</div>
+    </div>
+  </div>
+
+  <input type="file" id="file-input" accept="image/*" class="hidden-file-input" nonce="{{NONCE}}" />
+
+  <script nonce="{{NONCE}}">
+    window.ASSETS_URI = "{{ASSETS_URI}}";
+    window.STATIC_BACKGROUND_URI = "{{STATIC_BACKGROUND_URI}}";
+    window.CHAT_UI_SETTINGS = JSON.parse('{{CHAT_UI_SETTINGS}}');
+
+    // Particles animation
+    function createParticles(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+        container.appendChild(particle);
+      }
+    }
+
+    createParticles('particles');
+    createParticles('loading-particles');
+
+    // Botão "Novo QR" — solicita à extensão um novo QR code
+    const qrRefreshButton = document.getElementById('qr-refresh-button');
+    if (qrRefreshButton) {
+      qrRefreshButton.addEventListener('click', () => {
+        if (typeof acquireVsCodeApi !== 'undefined') {
+          const vscode = acquireVsCodeApi();
+          vscode.postMessage({ type: 'ui/refreshQr', payload: {} });
+        }
+      });
+    }
+
+    // SILENCE CONSOLE LOGS - Global replacement
+    // Remove all console logs that user might see in the extension
+    // console.log = () => {};
+    // console.error = () => {};
+    // console.warn = () => {};
+    // console.info = () => {};
+    // console.debug = () => {};
+    // console.trace = () => {};
+  </script>
+  <script nonce="{{NONCE}}" src="{{MARKED_JS_URI}}"></script>
+  <script nonce="{{NONCE}}" src="{{PATCH_WIDGET_JS_URI}}"></script>
+  <script type="module" nonce="{{NONCE}}" src="{{APP_JS_URI}}"></script>
+</body>
+</html>

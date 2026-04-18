@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- CSP: allows CSS/JS from the webview -->
+  <meta http-equiv="Content-Security-Policy"
+        content="
+          default-src 'none';
+          img-src {{CSP_SOURCE}} data: blob:;
+          style-src {{CSP_SOURCE}} 'nonce-{{NONCE}}' 'unsafe-inline';
+          script-src 'nonce-{{NONCE}}' https://cdn.jsdelivr.net;
+        " />
+
+  <link rel="stylesheet" href="{{STYLES_URI}}">
+  <title>Nic Hyper Flow - Settings</title>
+  <!-- Chart.js for billing charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div id="app">
+    <header class="settings-header">
+      <div class="header-content">
+        <h1>⚙️ Settings</h1>
+        <p class="subtitle">Manage your project knowledge, assets and configurations</p>
+      </div>
+    </header>
+
+    <main class="settings-main">
+      <div class="settings-single-layout">
+
+
+        <section class="settings-section">
+          <h2>🎨 Ajustes de UI</h2>
+          <p class="section-description">Controle visual do chat, background e visibilidade dos controles principais.</p>
+
+          <div class="settings-grid two-columns">
+            <div class="api-key-card feature-card">
+              <div class="setting-head">
+                <div>
+                  <h3>Background</h3>
+                  <p class="setting-copy">Escolha entre background cognitivo, imagem estática importada ou sem background.</p>
+                </div>
+                <span id="background-mode-badge" class="status-pill">Static image</span>
+              </div>
+
+              <div class="segmented-control" id="background-mode-group">
+                <button type="button" class="segment-btn" data-background-mode="cognitive">Cognitive</button>
+                <button type="button" class="segment-btn active" data-background-mode="static">Static Image</button>
+                <button type="button" class="segment-btn" data-background-mode="none">None</button>
+              </div>
+
+              <div class="button-group compact-group">
+                <button id="select-background-image" class="btn-secondary">Importar imagem</button>
+                <button id="remove-background-image" class="btn-ghost">Remover plano de fundo</button>
+              </div>
+
+              <div id="background-image-status" class="status-inline">Imagem padrão: assets/background.png</div>
+
+              <div class="info-box compact-info">
+                <p>A arte de fundo do chat muda dinamicamente conforme o estado mental do agente. Você percebe visualmente quando ele está compreendendo, planejando, executando ou validando a tarefa.</p>
+              </div>
+            </div>
+
+
+          </div>
+        </section>
+
+        <section class="settings-section">
+          <h2>🧠 Reasoning, contexto e foco</h2>
+          <p class="section-description">Configurações que alteram como o modelo pensa, quando compacta o contexto e quanto controle manual fica disponível.</p>
+
+          <div class="settings-grid two-columns">
+            <div class="api-key-card feature-card">
+              <div class="setting-head">
+                <div>
+                  <h3>Reasoning</h3>
+                  <p class="setting-copy">O botão de reasoning serve para ajustar o esforço cognitivo do modelo atual. Em OpenAI afeta o reasoning effort; em Anthropic controla thinking budget / thinking off.</p>
+                </div>
+              </div>
+
+              <div class="setting-stack">
+                <label class="input-group">
+                  <span>OpenAI default</span>
+                  <select id="openai-reasoning-select" class="custom-select">
+                    <option value="none">None</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                    <option value="xhigh">XHigh</option>
+                  </select>
+                </label>
+
+                <label class="input-group">
+                  <span>Anthropic default</span>
+                  <select id="anthropic-reasoning-select" class="custom-select">
+                    <option value="none">None</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="api-key-card feature-card">
+              <div class="setting-head">
+                <div>
+                  <h3>Estado inicial do Modo Foco</h3>
+                  <p class="setting-copy">Define se novos chats começam com o Modo Foco ativado por padrão.</p>
+                </div>
+                <div class="toggle-switch">
+                  <input type="checkbox" id="toggle-default-focused-mode">
+                  <label for="toggle-default-focused-mode"></label>
+                </div>
+              </div>
+              <div class="info-box compact-info">
+                <p>O Modo Foco reduz a superfície operacional do agente, limitando as ferramentas disponíveis apenas ao essencial (edição de arquivos e terminal), evitando distrações e uso excessivo de tokens em ferramentas de busca ou navegação.</p>
+              </div>
+            </div>
+
+
+          </div>
+        </section>
+
+        <section class="settings-section">
+          <h2>🛡️ Aprovação de edição</h2>
+          <p class="section-description">Controla se o agente aplica alterações direto ou se pergunta antes de editar arquivos.</p>
+
+          <div class="api-key-card feature-card">
+            <div class="segmented-control" id="edit-approval-mode-group">
+              <button type="button" class="segment-btn active" data-edit-approval-mode="apply_everything">Apply everything</button>
+              <button type="button" class="segment-btn" data-edit-approval-mode="ask_before_apply">Ask before apply</button>
+            </div>
+            <div class="info-box compact-info">
+              <p><strong>Apply everything</strong> aplica edição sem confirmação. <strong>Ask before apply</strong> abre aprovação antes de qualquer mudança de arquivo/código.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="settings-section">
+          <h2>🤖 Modelo selecionado</h2>
+          <p class="section-description">Defina o modelo padrão e confira o custo por 1M de tokens. Navegação alternativa: <strong>Ctrl+Shift+P</strong> → procure por comandos do Nic Hyper Flow para selecionar modelo ou abrir configurações.</p>
+
+          <div class="settings-grid two-columns">
+            <div class="api-key-card feature-card">
+              <label class="input-group">
+                <span>Modelo padrão</span>
+                <select id="default-model-select" class="custom-select"></select>
+              </label>
+              <div id="selected-model-meta" class="status-inline">Selecione um modelo para ver detalhes.</div>
+            </div>
+
+            <div class="api-key-card feature-card">
+              <h3 style="margin-top:0">Preço por modelo</h3>
+              <div id="pricing-model-list" class="pricing-model-list"></div>
+            </div>
+          </div>
+        </section>
+
+
+
+        <section class="settings-section">
+          <h2>🖥️ run_command</h2>
+          <p class="section-description">Runcommands allowlist e run_everything sobre a tool <code>run_command</code>.</p>
+
+          <div class="settings-grid two-columns">
+            <div class="api-key-card feature-card">
+              <label class="toggle-row">
+                <span>
+                  <strong>Run everything</strong>
+                  <small>Quando ativo, qualquer comando pode executar sem aprovação. É perigoso e amplia muito a superfície de risco.</small>
+                </span>
+                <input id="run-everything-toggle" type="checkbox" />
+              </label>
+            </div>
+
+            <div class="api-key-card feature-card">
+              <div class="setting-head">
+                <div>
+                  <h3>Allowlist</h3>
+                  <p class="setting-copy">Um comando por linha. Tudo que estiver aqui é sempre permitido.</p>
+                </div>
+              </div>
+              <label class="input-group">
+                <textarea id="allowlist-textarea" class="custom-textarea" rows="8" placeholder="git status&#10;npm run lint&#10;dir"></textarea>
+              </label>
+              <div class="button-group compact-group">
+                <button id="save-allowlist-btn" class="btn-primary">Salvar allowlist</button>
+              </div>
+              <div id="allowed-commands-list" class="allowed-commands-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="settings-section">
+          <h2>✍️ System Prompt Addon</h2>
+          <p class="section-description">Instruções adicionais anexadas ao system prompt em todas as conversas.</p>
+          <div class="api-key-card feature-card">
+            <label class="input-group">
+              <span>Custom instructions</span>
+              <textarea id="custom-prompt" class="custom-textarea" rows="8" placeholder="Ex: priorize segurança, mantenha respostas objetivas, proponha patches cirúrgicos."></textarea>
+            </label>
+            <div class="button-group compact-group">
+              <button id="save-custom-prompt" class="btn-primary">Salvar</button>
+              <button id="clear-custom-prompt" class="btn-secondary">Limpar</button>
+            </div>
+            <div class="status-info">
+              <span class="status-label">Status:</span>
+              <span id="custom-prompt-status" class="status-value">No custom instructions</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="settings-section">
+          <h2>🖼️ Image generation settings</h2>
+          <p class="section-description">Escolha o modelo de geração de assets.</p>
+          <div class="api-key-card feature-card">
+            <label class="input-group">
+              <span>Image generation model</span>
+              <select id="image-model-selector" class="custom-select">
+                <option value="gpt-image-1.5">GPT-Image-1.5</option>
+                <option value="nano-banana">Nano Banana</option>
+              </select>
+            </label>
+            <div class="button-group compact-group">
+              <button id="save-image-model" class="btn-primary">Salvar modelo de imagem</button>
+            </div>
+            <div class="status-info">
+              <span class="status-label">Status:</span>
+              <span id="image-model-status" class="status-value">Not configured</span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Modal: PKB Management -->
+    <div id="pkb-modal" class="modal hidden">
+      <div class="modal-content" style="max-width: 700px; max-height: 90vh; overflow-y: auto;">
+        <div class="modal-header">
+          <h2 id="pkb-modal-title">New Knowledge</h2>
+          <button id="close-pkb-modal" class="icon-button-close">×</button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="pkb-id" />
+          <input type="hidden" id="pkb-dedupKey" />
+          <div class="form-group">
+            <label for="pkb-question">Canonical Question *</label>
+            <input type="text" id="pkb-question" placeholder="What does this fact answer?" />
+          </div>
+          <div class="form-group">
+            <label for="pkb-scope">Scope (File/Module) *</label>
+            <input type="text" id="pkb-scope" placeholder="Where does this apply? (e.g., global, auth, database)" />
+          </div>
+          <div class="form-group">
+            <label for="pkb-answer">Fact Content *</label>
+            <textarea id="pkb-answer" rows="6" placeholder="Describe the knowledge in detail..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="pkb-reference">Reference</label>
+            <input type="text" id="pkb-reference" placeholder="Ex: src/main.ts:42" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="pkb-confidence">Confidence (0.0 - 1.0)</label>
+              <input type="number" id="pkb-confidence" min="0" max="1" step="0.1" value="1.0" />
+            </div>
+            <div class="form-group">
+              <label for="pkb-status">Status</label>
+              <select id="pkb-status">
+                <option value="active">Active</option>
+                <option value="deprecated">Deprecated</option>
+                <option value="archived">Archived</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="pkb-tags">Tags (comma-separated)</label>
+            <input type="text" id="pkb-tags" placeholder="e.g.: auth, jwt, security" />
+          </div>
+          <div class="form-group">
+            <label for="pkb-sources">Sources (one per line)</label>
+            <textarea id="pkb-sources" rows="3" placeholder="src/file1.ts&#10;docs/guide.md"></textarea>
+          </div>
+          <div class="modal-footer" style="display: flex; gap: 12px; justify-content: flex-end; padding-top: 16px; border-top: 1px solid var(--glass-border);">
+            <button id="cancel-pkb-entry" class="btn-ghost">Cancel</button>
+            <button id="delete-pkb-entry" class="btn-danger" style="display: none;">Delete Permanently</button>
+            <button id="save-pkb-entry" class="btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Asset Zoom -->
+    <div id="asset-zoom-modal" class="modal hidden" style="backdrop-filter: blur(8px);">
+      <div style="max-width: 95%; max-height: 95vh; display: flex; flex-direction: column; background: rgba(0,0,0,0.95); border-radius: 12px; overflow: hidden;">
+        <img id="asset-zoom-img" src="" style="max-width: 100%; max-height: 90vh; object-fit: contain;" />
+        <div style="padding: 12px; text-align: center; color: var(--text-secondary); font-size: 0.9rem;" id="asset-zoom-title"></div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <script nonce="{{NONCE}}">
+    // SILENCE CONSOLE LOGS - Global replacement
+    // Remove all console logs that user might see in the extension
+    console.log = () => {};
+    console.error = () => {};
+    console.warn = () => {};
+    console.info = () => {};
+    console.debug = () => {};
+    console.trace = () => {};
+  </script>
+  <script nonce="{{NONCE}}" src="{{APP_JS_URI}}"></script>
+</body>
+</html>

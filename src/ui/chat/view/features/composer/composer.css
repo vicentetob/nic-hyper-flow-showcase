@@ -1,0 +1,921 @@
+/* Composer Feature Styles */
+
+.composer-input-wrap {
+  position: relative;
+  width: 100%;
+}
+
+#user-input {
+  width: 100%;
+  min-height: 84px;
+  max-height: 400px;
+  padding: 12px 14px 44px 14px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  resize: none;
+  overflow-y: hidden;
+  transition: border-color 0.2s ease; /* Removido transition de height para evitar flicker */
+  display: block;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+#user-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.composer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 6px;
+  margin-bottom: 2px;
+  font-size: 0.7rem;
+  opacity: 0.8;
+  position: relative;
+  z-index: 1; /* Reduzido para ficar atrás do seletor de modelos */
+}
+
+.composer-actions-left {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  z-index: 10;
+  max-width: calc(100% - 180px);
+  min-height: 26px;
+}
+
+.model-selector-anchor {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  min-width: 0;
+  height: 26px;
+}
+
+.identity-inline {
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: var(--text-secondary);
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+}
+
+.identity-inline-button {
+  appearance: none;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 26px;
+  font-size: 0.7rem;
+}
+
+.identity-inline-button .identity-inline-brain {
+  font-size: 0.75rem;
+}
+
+.identity-inline-button #model-name-display-text {
+  font-size: 0.68rem;
+  max-width: 120px;
+}
+
+.identity-inline-button:hover,
+.identity-inline-button[aria-expanded="true"] {
+  color: var(--text-primary);
+  border-color: rgba(124, 58, 237, 0.28);
+  background: rgba(124, 58, 237, 0.08);
+}
+
+.identity-inline-button:focus-visible {
+  outline: none;
+  border-color: rgba(124, 58, 237, 0.4);
+  box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.22);
+}
+
+.identity-inline-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.identity-inline-brain {
+  flex-shrink: 0;
+}
+
+#model-name-display-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 140px;
+}
+
+.identity-inline-chevron {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  opacity: 0.82;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.identity-inline-button[aria-expanded="true"] .identity-inline-chevron {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+.model-selector-menu {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 10px);
+  width: min(340px, calc(100vw - 28px));
+  max-height: min(320px, 55vh);
+  overflow-y: auto;
+  padding: 8px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(22, 22, 30, 0.98), rgba(13, 13, 18, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.46);
+  backdrop-filter: blur(18px);
+  z-index: 2000;
+}
+
+.model-selector-menu::-webkit-scrollbar {
+  width: 8px;
+}
+
+.model-selector-menu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+.model-selector-option {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.model-selector-option + .model-selector-option {
+  margin-top: 6px;
+}
+
+.model-selector-option:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(124, 58, 237, 0.24);
+}
+
+.model-selector-option.active {
+  background: linear-gradient(180deg, rgba(124, 58, 237, 0.16), rgba(59, 130, 246, 0.12));
+  border-color: rgba(139, 92, 246, 0.42);
+  box-shadow: inset 0 0 0 1px rgba(139, 92, 246, 0.14);
+}
+
+.model-selector-option:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.model-selector-option-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.model-selector-option-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.model-selector-option-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #d8b4fe;
+  background: rgba(124, 58, 237, 0.14);
+  border: 1px solid rgba(124, 58, 237, 0.28);
+  border-radius: 999px;
+  padding: 2px 7px;
+  flex-shrink: 0;
+}
+
+.model-selector-option-meta {
+  font-size: 0.64rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.model-selector-option-description {
+  font-size: 0.68rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* Tooltip Técnica (Sussurro) */
+.identity-inline-button[data-tooltip]:not([aria-expanded="true"]):hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  z-index: 10000;
+  
+  width: max-content;
+  max-width: 220px;
+  padding: 6px 10px;
+  
+  font-size: 0.62rem;
+  line-height: 1.4;
+  white-space: pre;
+  
+  border-radius: 4px;
+  background: rgba(15, 15, 20, 0.95);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  
+  pointer-events: none;
+  opacity: 0;
+  animation: tooltip-fade-in 0.2s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+@keyframes tooltip-fade-in {
+  to { opacity: 1; transform: translateY(-2px); }
+}
+
+/* .planning-pill {
+  font-size: 0.65rem;
+  padding: 1px 8px;
+  border-radius: 999px;
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
+  user-select: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+  display: flex;
+  align-items: center;
+}
+
+.planning-pill:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--text-primary);
+}
+
+.planning-pill.active {
+  color: #9fd2ff;
+  border-color: rgba(100, 180, 255, 0.4);
+  background: rgba(100, 180, 255, 0.08);
+}
+
+/* Tooltip do Planning (Sussurro) */
+.planning-pill:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0; /* Alinha à direita já que o botão está no canto */
+  z-index: 1000;
+  
+  width: max-content;
+  max-width: 200px;
+  padding: 6px 10px;
+  
+  font-size: 0.62rem;
+  line-height: 1.4;
+  white-space: pre;
+  text-align: right;
+  
+  border-radius: 4px;
+  background: rgba(15, 15, 20, 0.95);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  
+  pointer-events: none;
+  opacity: 0;
+  animation: tooltip-fade-in 0.2s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+/* Subtle feedback no textarea quando o modo está ativo */
+.composer-input-wrap:has(#planning-toggle.active) #user-input {
+  border-color: rgba(100, 180, 255, 0.3);
+} */
+
+/* Tooltip do Input (Dica de Imagem - Estilo HUD Unificado) */
+.composer-input-wrap:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 18px);
+  left: 0;
+  z-index: 10000;
+
+  width: max-content;
+  max-width: 220px;
+  padding: 6px 10px;
+
+  font-size: 0.62rem;
+  line-height: 1.4;
+  white-space: pre;
+
+  border-radius: 4px;
+  background: rgba(15, 15, 20, 0.95);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+
+  pointer-events: none;
+  opacity: 0;
+  animation: tooltip-fade-in 0.2s ease-out forwards;
+  animation-delay: 0.6s;
+}
+
+.composer-actions {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+  justify-content: flex-end;
+}
+
+.composer-tools-toggle {
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition: color 0.2s ease, opacity 0.2s ease, transform 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  opacity: 0.78;
+}
+
+.composer-tools-toggle:hover,
+.composer-tools-toggle[aria-expanded="true"] {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-primary);
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.composer-tools-toggle[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  z-index: 10000;
+  width: max-content;
+  max-width: min(220px, calc(100vw - 24px));
+  padding: 6px 10px;
+  font-size: 0.62rem;
+  line-height: 1.4;
+  white-space: pre;
+  border-radius: 4px;
+  background: rgba(15, 15, 20, 0.95);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  opacity: 0;
+  animation: tooltip-fade-in 0.2s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+.composer-tools-drawer {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 25;
+  overflow: visible;
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+  transform-origin: right center;
+  margin-right: 4px;
+}
+
+.composer-tools-drawer.hidden {
+  opacity: 0;
+  transform: translateX(8px) scale(0.95);
+  pointer-events: none;
+  position: absolute;
+  visibility: hidden;
+  width: 0;
+  overflow: hidden;
+  margin-right: 0;
+  gap: 0;
+}
+
+#send-button {
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  cursor: default;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  height: 26px;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+#send-button.active {
+  color: var(--accent-color);
+  cursor: pointer;
+  opacity: 1;
+}
+
+#send-button.active:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--accent-color);
+}
+
+#send-button.stop-button {
+  background: rgba(220, 38, 38, 0.1);
+  color: #ff8a8a;
+  border-color: rgba(220, 38, 38, 0.4);
+  cursor: pointer;
+  opacity: 1;
+}
+
+#send-button.stop-button:hover {
+  background: rgba(220, 38, 38, 0.2);
+}
+
+#send-button.queue-intent-button {
+  color: #4ade80; /* Green */
+  border-color: rgba(74, 222, 128, 0.4);
+  cursor: pointer;
+  opacity: 1;
+}
+
+#send-button.queue-intent-button:hover {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: #4ade80;
+}
+
+.reasoning-effort-button {
+  padding: 2px;
+  width: auto;
+  min-width: 0;
+  background: transparent;
+  color: inherit;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease, filter 0.2s ease;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+  box-shadow: none;
+  outline: none;
+  position: relative;
+}
+
+.reasoning-effort-button[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+
+  width: max-content;
+  /* garante que o tooltip nunca seja maior que a viewport (evita corte) */
+  max-width: min(220px, calc(100vw - 24px));
+  padding: 6px 10px;
+
+  font-size: 0.62rem;
+  line-height: 1.4;
+  white-space: pre;
+
+  border-radius: 4px;
+  background: rgba(15, 15, 20, 0.95);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+
+  pointer-events: none;
+  opacity: 0;
+  animation: tooltip-fade-in 0.2s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+/* Quando o botão estiver muito próximo da borda direita, alinhar o tooltip à direita do botão */
+.reasoning-effort-button.tooltip-shift-left[data-tooltip]:hover::after {
+  left: auto;
+  right: 0;
+  transform: translateX(0);
+}
+
+/* Quando o botão estiver muito próximo da borda esquerda, alinhar o tooltip à esquerda do botão */
+.reasoning-effort-button.tooltip-shift-right[data-tooltip]:hover::after {
+  left: 0;
+  right: auto;
+  transform: translateX(0);
+}
+
+.reasoning-effort-button:hover,
+.reasoning-effort-button[aria-expanded="true"] {
+  background: transparent;
+  border-color: transparent;
+  color: inherit;
+  opacity: 0.9;
+  transform: scale(1.06);
+}
+
+.reasoning-effort-button:focus-visible {
+  outline: none;
+}
+
+.reasoning-effort-label {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+/* Brain color by reasoning effort level */
+.reasoning-effort-button[data-effort="none"]   .brain-svg { color: var(--text-secondary); }
+.reasoning-effort-button[data-effort="low"]    .brain-svg { color: #c084fc; }
+.reasoning-effort-button[data-effort="medium"] .brain-svg { color: #a855f7; }
+.reasoning-effort-button[data-effort="high"]   .brain-svg { color: #7c3aed; filter: drop-shadow(0 0 3px rgba(124, 58, 237, 0.55)); }
+.reasoning-effort-button[data-effort="xhigh"]  .brain-svg { color: #7c3aed; filter: drop-shadow(0 0 6px rgba(124, 58, 237, 0.95)) drop-shadow(0 0 14px rgba(139, 92, 246, 0.6)); }
+
+.reasoning-effort-menu {
+  position: absolute;
+  right: 82px;
+  bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 110px;
+  padding: 6px;
+  border-radius: 8px;
+  background: rgba(15, 15, 20, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  z-index: 30;
+}
+
+.reasoning-effort-option,
+.focused-mode-option {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 6px 8px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.72rem;
+}
+
+.reasoning-effort-option:hover,
+.reasoning-effort-option.active,
+.focused-mode-option:hover {
+  color: var(--text-primary);
+  border-color: rgba(59, 130, 246, 0.35);
+  background: rgba(59, 130, 246, 0.12);
+}
+
+.reasoning-menu-separator {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+  margin: 4px 0;
+}
+
+.focused-mode-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.focused-mode-option[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  z-index: 10000;
+
+  width: max-content;
+  max-width: 240px;
+  padding: 6px 10px;
+
+  font-size: 0.62rem;
+  line-height: 1.4;
+  white-space: normal;
+
+  border-radius: 4px;
+  background: rgba(15, 15, 20, 0.95);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+
+  pointer-events: none;
+  opacity: 0;
+  animation: tooltip-fade-in 0.2s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+.focused-mode-option.active {
+  color: #4ade80;
+  border-color: rgba(74, 222, 128, 0.35);
+  background: rgba(74, 222, 128, 0.08);
+}
+
+.focused-mode-option.active .focused-mode-icon {
+  color: #4ade80;
+}
+
+.focused-mode-icon {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+
+.focused-mode-option.active .focused-mode-icon {
+  opacity: 1;
+}
+
+
+
+.summarize-context-button {
+  padding: 2px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease, color 0.2s ease;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  opacity: 0.72;
+}
+
+.summarize-context-button:hover {
+  background: transparent;
+  color: var(--text-primary);
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+/* ── Focus Mode Button (toolbar principal) ── */
+.focused-mode-button {
+  padding: 2px;
+  width: auto;
+  min-width: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease, color 0.2s ease, filter 0.2s ease;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+  box-shadow: none;
+  outline: none;
+  position: relative;
+  opacity: 0.55;
+}
+
+.focused-mode-button:hover {
+  opacity: 0.9;
+  transform: scale(1.08);
+  color: var(--text-primary);
+}
+
+.focused-mode-button.active {
+  color: #4ade80;
+  opacity: 1;
+  filter: drop-shadow(0 0 4px rgba(74, 222, 128, 0.55));
+}
+
+.focused-mode-button.active:hover {
+  filter: drop-shadow(0 0 7px rgba(74, 222, 128, 0.8));
+}
+
+.focused-mode-button:focus-visible {
+  outline: none;
+}
+
+.edit-approval-mode-button {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease, color 0.15s ease, filter 0.2s ease;
+  flex-shrink: 0;
+  position: relative;
+  opacity: 0.75;
+  overflow: visible;
+}
+
+.edit-approval-mode-button:hover {
+  transform: scale(1.08);
+  color: var(--text-primary);
+  opacity: 1;
+}
+
+.edit-approval-mode-button:focus-visible {
+  outline: none;
+}
+
+.edit-approval-mode-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-approval-mode-icon svg,
+.edit-approval-mode-icon img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.edit-approval-mode-icon svg {
+  stroke: currentColor;
+}
+
+.edit-approval-mode-icon img {
+  object-fit: contain;
+}
+
+.edit-approval-mode-button[data-mode="apply_everything"] {
+  color: #4ade80;
+  filter: drop-shadow(0 0 4px rgba(74, 222, 128, 0.35));
+}
+
+.edit-approval-mode-button[data-mode="ask_before_apply"] {
+  color: #fbbf24;
+  filter: drop-shadow(0 0 4px rgba(251, 191, 36, 0.25));
+}
+
+.edit-approval-mode-button[data-mode="apply_everything"] .edit-approval-mode-icon-ask,
+.edit-approval-mode-button[data-mode="ask_before_apply"] .edit-approval-mode-icon-apply {
+  display: none;
+}
+
+.edit-approval-mode-button[data-mode="apply_everything"] .edit-approval-mode-icon-apply,
+.edit-approval-mode-button[data-mode="ask_before_apply"] .edit-approval-mode-icon-ask {
+  display: inline-flex;
+}
+
+.edit-approval-mode-button[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  left: auto;
+  transform: none;
+  z-index: 10000;
+  width: max-content;
+  max-width: min(240px, calc(100vw - 24px));
+  min-width: 180px;
+  padding: 6px 10px;
+  font-size: 0.62rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  text-align: left;
+  border-radius: 4px;
+  background: rgba(15, 15, 20, 0.95);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  opacity: 0;
+  animation: tooltip-fade-in 0.2s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+.edit-approval-mode-button.tooltip-shift-left[data-tooltip]:hover::after {
+  right: 0;
+  left: auto;
+}
+
+.edit-approval-mode-button.tooltip-shift-right[data-tooltip]:hover::after {
+  left: 0;
+  right: auto;
+}
+
+.composer-tools-drawer .summarize-context-button[data-tooltip]:hover::after,
+.composer-tools-drawer .focused-mode-button[data-tooltip]:hover::after,
+.composer-tools-drawer .reasoning-effort-button[data-tooltip]:hover::after {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
+.composer-tools-drawer .edit-approval-mode-button[data-tooltip]:hover::after {
+  right: 50%;
+  left: auto;
+  transform: translateX(50%);
+}
+
+/* Tooltip do Focus Mode Button */
+.summarize-context-button[data-tooltip]:hover::after,
+.focused-mode-button[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+
+  width: max-content;
+  max-width: min(220px, calc(100vw - 24px));
+  padding: 6px 10px;
+
+  font-size: 0.62rem;
+  line-height: 1.4;
+  white-space: pre;
+
+  border-radius: 4px;
+  background: rgba(15, 15, 20, 0.95);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+
+  pointer-events: none;
+  opacity: 0;
+  animation: tooltip-fade-in 0.2s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+/* SVG wrapper do focus icon */
+.focus-svg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.focus-svg svg {
+  width: 100%;
+  height: 100%;
+}
+
+

@@ -1,0 +1,384 @@
+/* ========== PATCH WIDGET - Estilos do Widget de Preview de Comandos ========== */
+
+/* Variáveis do widget (ajusta fácil sem caçar CSS) */
+.patch-widget-preview {
+  --pw-header-min-h: 24px;
+  --pw-header-pad-y: 4px;
+  --pw-header-pad-x: 10px;
+
+  /* corpo: garante ~6 linhas visíveis por padrão */
+  --pw-body-min-h: 10em; /* ~6 linhas se line-height ~1.6 */
+  --pw-body-max-h: 10em;
+  --pw-body-expanded-h: 25em; /* ~15 linhas */
+}
+
+.patch-widget-preview.expanded {
+  --pw-body-min-h: var(--pw-body-expanded-h);
+}
+
+/* Glassmorphism Furioso */
+.patch-widget-preview {
+  background: rgba(30, 30, 30, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 3px solid var(--accent-color);
+  border-radius: 12px;
+
+  margin: 12px 0;
+  padding: 0;
+  overflow: hidden;
+  max-width: 98%;
+
+  /* ✅ altura agora é controlada pelo body (sem height inline hardcoded) */
+  min-height: calc(var(--pw-header-min-h) + var(--pw-body-min-h));
+
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  animation: patch-widget-slideIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: all 0.3s ease;
+
+  font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  z-index: 10;
+  position: relative;
+  scroll-margin-bottom: 100px;
+}
+
+@keyframes patch-widget-slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.patch-widget-preview.complete {
+  border-left-color: var(--success-color);
+  background: rgba(30, 30, 30, 0.45);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.patch-widget-preview.error {
+  border-left-color: #ef4444;
+  background: rgba(60, 20, 20, 0.4);
+}
+
+.patch-widget-preview.error .patch-widget-status {
+  color: #ef4444;
+  animation: none;
+  opacity: 1;
+}
+
+.patch-widget-preview.complete .patch-widget-status {
+  color: var(--success-color);
+}
+
+.patch-widget-preview.fade-out {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* ✅ HEADER compacto e estável */
+.patch-widget-header {
+  background: rgba(255, 255, 255, 0.04);
+
+  padding: var(--pw-header-pad-y) var(--pw-header-pad-x);
+  min-height: var(--pw-header-min-h);
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  /* ✅ nunca quebra / nunca "dobra pra dentro" */
+  flex-wrap: nowrap;
+  white-space: nowrap;
+
+  font-size: 0.7rem;
+  font-weight: 500;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-family: var(--vscode-font-family, "Inter", sans-serif);
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.patch-widget-header:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.patch-widget-icon {
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+  flex: 0 0 auto;
+}
+
+.patch-widget-type {
+  color: #4fc1ff;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.62rem;
+  letter-spacing: 0.8px;
+  padding: 2px 6px;
+  background: rgba(79, 193, 255, 0.15);
+  border: 1px solid rgba(79, 193, 255, 0.2);
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(79, 193, 255, 0.1);
+  flex: 0 0 auto;
+}
+
+/* ✅ Path com ellipsis, sem empurrar / sem quebrar */
+.patch-widget-path {
+  color: #b5cea8; /* Cor mais clara/esverdeada para destacar */
+  font-weight: 600;
+  font-size: 0.75rem;
+  font-family: "JetBrains Mono", "Consolas", monospace;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  flex: 1 1 auto;
+  min-width: 0;
+  opacity: 1; /* Removida opacidade para máxima clareza */
+  margin-left: 4px;
+}
+
+.patch-widget-status {
+  color: #ffd700;
+  font-size: 0.68rem;
+  font-weight: 700;
+  margin-left: auto;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  animation: patch-widget-pulse-status 1.5s ease-in-out infinite;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+
+  /* ✅ não encolhe e não quebra */
+  flex: 0 0 auto;
+}
+
+.patch-widget-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 0 0 auto;
+  margin-left: 4px;
+  font-size: 0.6rem;
+}
+
+.patch-widget-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.patch-widget-preview.expanded .patch-widget-toggle {
+  background: rgba(var(--accent-color-rgb, 79, 193, 255), 0.2);
+  color: var(--accent-color, #4fc1ff);
+  border-color: rgba(var(--accent-color-rgb, 79, 193, 255), 0.3);
+}
+
+.patch-widget-toggle::before {
+  content: "▼";
+  transition: transform 0.3s ease;
+}
+
+.patch-widget-preview.expanded .patch-widget-toggle::before {
+  transform: rotate(180deg);
+}
+
+@keyframes patch-widget-pulse-status {
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+  }
+  50% {
+    opacity: 0.6;
+    text-shadow: none;
+  }
+}
+
+.patch-widget-preview.complete .patch-widget-status {
+  animation: none;
+  opacity: 1;
+  color: #4ade80;
+  text-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
+}
+
+/* ✅ BODY mais alto pra ler 4 linhas de boa */
+.patch-widget-body {
+  padding: 0;
+
+  min-height: var(--pw-body-min-h);
+  max-height: var(--pw-body-max-h);
+
+  overflow-y: auto;
+  overflow-x: auto;
+
+  font-size: 0.85rem;
+  line-height: 1.6;
+  background: transparent;
+}
+
+/* Placeholder enquanto carrega */
+.patch-widget-body:empty::before {
+  content: "✨ Inicializando engine de patch...";
+  color: var(--text-secondary);
+  font-style: italic;
+  font-size: 0.75rem;
+  padding: 14px;
+  display: block;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.patch-widget-body pre {
+  margin: 0;
+  padding: 10px 14px;
+  background: transparent;
+  border-radius: 0;
+
+  overflow-x: auto;
+
+  /* mantém seu comportamento atual */
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.patch-widget-body code {
+  font-family: "JetBrains Mono", "Fira Code", "Consolas", "Monaco", monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #e0e0e0;
+  background: transparent;
+}
+
+.patch-widget-body code span {
+  background: transparent;
+  color: inherit;
+}
+
+/* Tokens melhorados */
+.patch-widget-body code .tok-string {
+  color: #ce9178;
+}
+.patch-widget-body code .tok-comment {
+  color: #6a9955;
+  font-style: italic;
+}
+.patch-widget-body code .tok-number {
+  color: #b5cea8;
+}
+.patch-widget-body code .tok-keyword {
+  color: #c586c0;
+  font-weight: bold;
+}
+.patch-widget-body code .tok-type {
+  color: #4ec9b0;
+}
+.patch-widget-body code .tok-fn {
+  color: #dcdcaa;
+}
+.patch-widget-body code .tok-annotation {
+  color: #9cdcfe;
+}
+
+/* Scrollbar invisível mas funcional */
+.patch-widget-body::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.patch-widget-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+.patch-widget-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ========== PATCH WIDGET - DIFF INTERATIVO ========== */
+
+.patch-widget-body code.language-diff {
+  white-space: pre;
+}
+
+.patch-widget-body code.language-diff .pw-diff-line {
+  display: block;
+  white-space: pre;
+  word-break: normal;
+  padding: 0 8px;
+  /* border-radius: 4px; */ /* Removido para a pintura ser contínua como na imagem */
+  cursor: pointer;
+  user-select: text;
+  transition: background 0.1s;
+  min-height: 1.6em; /* Garante que a linha tenha altura mesmo vazia */
+}
+
+.patch-widget-body code.language-diff .pw-diff-prefix {
+  display: inline-block;
+  width: 1.5ch;
+  user-select: none;
+  opacity: 0.7;
+}
+
+.patch-widget-body code.language-diff .pw-diff-line:hover {
+  filter: brightness(1.2);
+}
+
+.patch-widget-body code.language-diff .pw-diff-hunk {
+  color: #d19a66;
+  background: rgba(209, 154, 102, 0.08);
+  margin: 8px 0 4px 0;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-weight: bold;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.patch-widget-body code.language-diff .pw-diff-meta {
+  color: #569cd6;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.patch-widget-body code.language-diff .pw-diff-ctx {
+  color: rgba(255, 255, 255, 0.6);
+  background-color: transparent;
+  border-left: 3px solid transparent;
+}
+
+.patch-widget-body code.language-diff .pw-diff-add {
+  color: #aff5b4;
+  background-color: rgba(63, 185, 80, 0.25);
+  border-left: 3px solid #3fb950;
+}
+
+.patch-widget-body code.language-diff .pw-diff-del {
+  color: #ffa198;
+  background-color: rgba(248, 81, 73, 0.25);
+  border-left: 3px solid #f85149;
+}
+
+.patch-widget-body code.language-diff ::selection {
+  background: rgba(79, 193, 255, 0.3);
+}

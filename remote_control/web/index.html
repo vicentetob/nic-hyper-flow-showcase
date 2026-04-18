@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!--
+    Base href substituído pelo flutter build --base-href /app/
+    Nunca altere manualmente esta linha.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Nic Hyper Flow Remote Control — controle seu VS Code remotamente via QR code.">
+
+  <!-- PWA / instalação -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="NHF Remote">
+  <meta name="theme-color" content="#0a0a0f">
+  <meta name="color-scheme" content="dark">
+
+  <!-- Google Sign-In web client ID (necessário para google_sign_in_web se inicializar) -->
+  <!-- Substitua pelo seu Web Client ID do Firebase Console:
+       Authentication → Sign-in method → Google → Web Client ID -->
+  <meta name="google-signin-client_id"
+        content="YOUR_GOOGLE_WEB_CLIENT_ID.apps.googleusercontent.com">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <title>Nic Hyper Flow — Remote Control</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    /* Splash screen mínimo enquanto o Flutter carrega */
+    :root {
+      color-scheme: dark;
+    }
+    html, body {
+      margin: 0; padding: 0;
+      background-color: #0a0a0f;
+      color-scheme: dark;
+      height: 100%;
+    }
+    /* Evita flash branco enquanto o Flutter monta o canvas */
+    flt-glass-pane, flutter-view, flt-scene-host {
+      background-color: #0a0a0f !important;
+    }
+  </style>
+
+  <script>
+    // Invalidação automática de cache do PWA baseada no version.json autogerado do Flutter
+    (async function checkVersionAndUpdateCache() {
+      try {
+        const url = 'version.json?t=' + new Date().getTime();
+        const response = await fetch(url, { cache: "no-store" });
+        if (response.ok) {
+          const data = await response.json();
+          const serverVersion = data.version + "+" + data.build_number;
+          const currentVersion = localStorage.getItem("pwa_version");
+          
+          if (currentVersion && currentVersion !== serverVersion) {
+            console.log(`[PWA] Nova versão detectada: ${currentVersion} -> ${serverVersion}. Limpando caches...`);
+            localStorage.setItem("pwa_version", serverVersion);
+            
+            // Desregistra Service Workers ativos
+            if ('serviceWorker' in navigator) {
+              const registrations = await navigator.serviceWorker.getRegistrations();
+              for (const reg of registrations) await reg.unregister();
+            }
+            
+            // Limpa API de caches (arquivos JS, assets cacheados, etc)
+            if ('caches' in window) {
+              const cacheNames = await caches.keys();
+              for (const name of cacheNames) await caches.delete(name);
+            }
+            
+            // Recarrega a página para puxar os assets frescos da network
+            window.location.reload();
+          } else if (!currentVersion) {
+            // Salva no primeiro acesso para ser a referência em futuras atualizações
+            localStorage.setItem("pwa_version", serverVersion);
+          }
+        }
+      } catch (e) {
+        console.error("[PWA] Erro ao verificar versão:", e);
+      }
+    })();
+  </script>
+</head>
+<body>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

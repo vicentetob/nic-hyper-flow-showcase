@@ -1,0 +1,308 @@
+{
+  "name": "nic-hyper-flow-alpha2",
+  "displayName": "Nic Hyper Flow - Alpha 2.0",
+  "description": "Run AI agents locally with your own API keys",
+  "version": "1.1.23",
+  "publisher": "NicHyperFlow",
+  "license": "All rights reserved",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "icon": "assets/nic-hyper-flow-marketplace.png",
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:nic-hyper-flow.chatView",
+    "onCommand:nic-hyper-flow.openChat",
+    "onCommand:nic-hyper-flow.openSettings",
+    "onCommand:nic-hyper-flow.openTerminal"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "nic-hyper-flow-sidebar",
+          "title": "Nic Hyper Flow",
+          "icon": "assets/nic-hyper-flow-activitybar.svg"
+        }
+      ],
+      "panel": [
+        {
+          "id": "nic-hyper-flow-panel",
+          "title": "Nic Hyper Flow",
+          "icon": "assets/nic-hyper-flow-activitybar.svg"
+        }
+      ]
+    },
+    "views": {
+      "nic-hyper-flow-sidebar": [
+        {
+          "id": "nic-hyper-flow.chatView",
+          "type": "webview",
+          "name": "Chat",
+          "icon": "$(alert)",
+          "webviewOptions": {
+            "retainContextWhenHidden": true
+          }
+        }
+      ],
+      "nic-hyper-flow-panel": [
+        {
+          "id": "nic-hyper-flow.chatViewPanel",
+          "type": "webview",
+          "name": "Chat",
+          "icon": "assets/nic-hyper-flow-activitybar.svg",
+          "webviewOptions": {
+            "retainContextWhenHidden": true
+          }
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "nic-hyper-flow.openChat",
+        "title": "Nic Hyper Flow: Abrir Chat",
+        "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "nic-hyper-flow.openSettings",
+        "title": "Nic Hyper Flow: Open Settings",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "nic-hyper-flow.reloadChatView",
+        "title": "Nic Hyper Flow: Reload Chat",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "nic-hyper-flow.githubLogin",
+        "title": "Nic Hyper Flow: GitHub Login",
+        "icon": "$(github)"
+      },
+      {
+        "command": "nic-hyper-flow.githubLogout",
+        "title": "Nic Hyper Flow: GitHub Logout",
+        "icon": "$(sign-out)"
+      },
+      {
+        "command": "nic-hyper-flow.openUpgrade",
+        "title": "Nic Hyper Flow: Upgrade",
+        "icon": "$(rocket)"
+      },
+      {
+        "command": "nic-hyper-flow.configureModels",
+        "title": "Nic Hyper Flow: Configure Models & Keys",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "nic-hyper-flow.selectImageModel",
+        "title": "Nic Hyper Flow: Select Image Generation Model",
+        "icon": "$(photo)"
+      },
+      {
+        "command": "nic-hyper-flow.openTerminal",
+        "title": "Nic Hyper Flow: Open Terminal Monitor",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "nic-hyper-flow.connectRemoteControl",
+        "title": "Nic Hyper Flow: Conectar Controle Remoto (novo QR)",
+        "icon": "$(device-mobile)"
+      },
+      {
+        "command": "nic-hyper-flow.disconnectRemoteControl",
+        "title": "Nic Hyper Flow: Desconectar Controle Remoto",
+        "icon": "$(debug-disconnect)"
+      },
+      {
+        "command": "nic-hyper-flow.restartTunnel",
+        "title": "Nic Hyper Flow: Restart Cloudflare Tunnel",
+        "icon": "$(refresh)"
+      }
+    ],
+    "configuration": {
+      "title": "Nic Hyper Flow",
+      "properties": {
+        "nic-hyper-flow.runCommand.allowAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "Permitir execução de todos os comandos sem confirmação (CUIDADO: Riscos de segurança)."
+        },
+        "nic-hyper-flow.runCommand.allowedCommands": {
+          "type": "array",
+          "default": [],
+          "description": "Lista de comandos permitidos para execução sem confirmação.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "nic-hyper-flow.diffHighlightEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable diff highlight in editor for added/removed lines"
+        },
+        "nic-hyper-flow.selectedModelId": {
+          "type": "string",
+          "default": "google:gemini-2.5-flash",
+          "description": "ID of the selected AI model."
+        },
+        "nic-hyper-flow.openaiReasoningEffort": {
+          "type": "string",
+          "enum": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ],
+          "default": "medium",
+          "description": "Reasoning effort usado pelos modelos OpenAI GPT-5."
+        },
+        "nic-hyper-flow.anthropicReasoningEffort": {
+          "type": "string",
+          "enum": [
+            "none",
+            "low",
+            "medium",
+            "high"
+          ],
+          "default": "none",
+          "description": "Thinking padrão usado pelos modelos Anthropic Claude."
+        },
+        "nic-hyper-flow.showReasoningButton": {
+          "type": "boolean",
+          "default": true,
+          "description": "Mostrar botão de reasoning/thinking na toolbar do chat."
+        },
+        "nic-hyper-flow.showApiCost": {
+          "type": "boolean",
+          "default": true,
+          "description": "Mostrar custo estimado de API do chat atual."
+        },
+        "nic-hyper-flow.showSummarizeButton": {
+          "type": "boolean",
+          "default": true,
+          "description": "Mostrar botão de sumarizar contexto na toolbar do chat."
+        },
+        "nic-hyper-flow.focusedModeEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Ativar modo foco por padrão."
+        },
+        "nic-hyper-flow.showTokenCounter": {
+          "type": "boolean",
+          "default": true,
+          "description": "Mostrar contador circular de consumo de contexto/tokens."
+        },
+        "nic-hyper-flow.uiBackgroundMode": {
+          "type": "string",
+          "enum": [
+            "cognitive",
+            "static",
+            "none"
+          ],
+          "default": "static",
+          "description": "Modo do background do chat: estados cognitivos, imagem estática ou sem background."
+        },
+        "nic-hyper-flow.uiBackgroundImagePath": {
+          "type": "string",
+          "default": "assets/background.png",
+          "description": "Caminho interno da imagem estática copiada para o background do chat."
+        },
+        "nic-hyper-flow.defaultImageModel": {
+          "type": "string",
+          "enum": [
+            "gpt-image-1.5",
+            "nano-banana"
+          ],
+          "default": "gpt-image-1.5",
+          "description": "Nic Hyper Flow: Modelo padrão para geração de assets/imagens."
+        },
+        "nic-hyper-flow.editApprovalMode": {
+          "type": "string",
+          "enum": [
+            "apply_everything",
+            "ask_before_apply"
+          ],
+          "default": "apply_everything",
+          "description": "Controla se o agente aplica edições automaticamente ou pede confirmação antes de qualquer tool que modifique arquivos/código."
+        },
+        "nic-hyper-flow.ollamaBaseUrl": {
+          "type": "string",
+          "default": "http://localhost:11434",
+          "description": "URL base do servidor Ollama local."
+        },
+        "nic-hyper-flow.defaultFocusedMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "Estado inicial do Modo Foco para novos chats."
+        },
+        "nic-hyper-flow.debugDisableTunnel": {
+          "type": "boolean",
+          "default": false,
+          "description": "Desativa a criação do túnel Cloudflare durante o desenvolvimento para evitar conflitos de processos."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile:prod",
+    "compile": "tsc -p ./ && node build.js && npm run bundle-webview && npm run bundle-terminal-webview",
+    "compile:prod": "tsc -p ./ && node build.js --production && npm run bundle-webview -- --minify && npm run bundle-terminal-webview -- --minify",
+    "compile:no-obfuscate": "npm run compile",
+    "bundle-webview": "esbuild src/ui/chat/view/app.ts --bundle --format=esm --platform=browser --outfile=dist/ui/chat/view/app.js --external:acquireVsCodeApi --target=es2022",
+    "bundle-terminal-webview": "esbuild src/ui/terminal/view/app.ts --bundle --format=esm --platform=browser --outfile=dist/ui/terminal/view/app.js --external:acquireVsCodeApi --target=es2022",
+    "watch": "tsc -watch -p ./",
+    "package": "npm run compile:prod && npx @vscode/vsce package",
+    "publish": "npm run compile:prod && npx @vscode/vsce publish",
+    "lint": "eslint src",
+    "pretest": "npm run compile && npm run lint",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@anthropic-ai/sdk": "^0.72.1",
+    "@google/generative-ai": "^0.24.1",
+    "@types/diff": "^7.0.2",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/node-fetch": "^2.6.13",
+    "@types/sql.js": "^1.4.9",
+    "@types/uuid": "^9.0.8",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.2.1",
+    "cross-env": "^7.0.3",
+    "diff": "^5.2.0",
+    "esbuild": "^0.24.1",
+    "eslint": "^9.39.1",
+    "eventsource-parser": "^3.0.6",
+    "express": "^5.2.1",
+    "firebase": "^12.8.0",
+    "firebase-admin": "^13.6.0",
+    "node-fetch": "^2.7.0",
+    "openai": "^6.17.0",
+    "pdfjs-dist": "^5.4.530",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.1",
+    "uuid": "^9.0.1"
+  },
+  "dependencies": {
+    "@types/qrcode": "^1.5.6",
+    "@types/ws": "^8.18.1",
+    "cloudflared": "^0.7.1",
+    "node-pty": "^1.1.0",
+    "playwright": "^1.58.2",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.34.5",
+    "sql.js": "^1.12.0",
+    "ws": "^8.20.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vicentetob/nic.hyper.flow.git"
+  }
+}

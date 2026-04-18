@@ -1,0 +1,70 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build Output
+dist/
+out/
+build/
+.next/
+
+# Flutter / Dart Cache
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+*.log
+
+# Android Build Cache
+.gradle/
+*.iml
+.idea/
+local.properties
+
+# iOS Build Cache
+DerivedData/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.hmap
+
+# Env Files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+*.pem
+
+# Firebase / Secrets
+firebase-service-account.json
+google-services.json
+GoogleService-Info.plist
+firebase_options.dart
+firebase.json
+
+# Internal Nic Hyper Flow metadata (knowledge base, asset registry — not for public repos)
+.nic-hyper-flow/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# VSIX / Extensions
+*.vsix
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

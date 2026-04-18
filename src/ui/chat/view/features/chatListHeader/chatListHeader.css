@@ -1,0 +1,14 @@
+/* Chat List Header Feature Styles */
+
+.chat-dropdown {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  padding: 5px 12px;
+  outline: none;
+  cursor: pointer;
+  min-width: 200px;
+  max-width: 300px;
+}

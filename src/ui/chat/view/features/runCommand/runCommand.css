@@ -1,0 +1,11 @@
+/* Run Command Feature Styles */
+
+.tool-card.run-command {
+  border-left-color: var(--warn-color);
+}
+
+.tool-card.run-command .tool-body {
+  display: block;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+}
