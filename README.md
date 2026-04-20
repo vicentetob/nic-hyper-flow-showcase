@@ -1,6 +1,6 @@
 # 🧠 Nic Hyper Flow
 
-nichyperflow.com
+https://nichyperflow.com
 
 > A local multi-agent AI orchestration engine living inside your VS Code, controllable via a mobile app.
 
