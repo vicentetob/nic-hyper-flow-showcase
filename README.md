@@ -1,5 +1,7 @@
 # 🧠 Nic Hyper Flow
 
+nichyperflow.com
+
 > A local multi-agent AI orchestration engine living inside your VS Code, controllable via a mobile app.
 
 [![VS Code Marketplace](https://img.shields.io/badge/Available%20on-Marketplace-blue.svg)](https://marketplace.visualstudio.com/items?itemName=NicHyperFlow.nic-hyper-flow-alpha2) [![Flutter Remote](https://img.shields.io/badge/Companion_App-Flutter-02569B.svg)](https://github.com/vicentetob/nic-hyper-flow-showcase/tree/master/remote_control)
